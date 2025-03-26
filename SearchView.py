@@ -212,21 +212,21 @@ def main():
     st.markdown("""
     #### Search Database View Dependencies
     
-    Enter search terms to find views based on:
-    - Tables (e.g., 'Booking')
-    - Specific table columns (e.g., 'Itinerary.ItineraryId')
-    - Multiple search terms supported
-    
-    #### Search Examples:
-    - `Booking`
-    - `Itinerary.ItineraryId`
-    - `Booking Itinerary.Name`
+    Search Help:
+    1. If a term starts with '>', search the term in the output columns with substring match.
+       Example: '>Name' will find any view with any output column containing the substring "name" (case insensitive).
+    2. If a term contains '%', perform substring match:
+       - 'Client.%name' matches table name 'client' (exact match) and any dependent column containing the substring "name".
+       - '%.%Name' matches any dependent table with any dependent column containing the substring 'name'.
+    3. If no '>' or '%' in the term, use the current logic:
+       - 'Table.Column' matches views referencing the specific table and column.
+       - 'Table' matches views referencing the table.
+
     """)
-    
     # Search input
     search_input = st.text_input(
         "Enter Search Terms", 
-        placeholder="Booking Itinerary.ItineraryId"
+        placeholder='>firstname %client.%phone'
     )
     
     # Perform search when search terms are provided
