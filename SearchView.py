@@ -3,6 +3,13 @@ import pandas as pd
 from collections import defaultdict
 import os
 
+# Set page configuration
+st.set_page_config(
+    page_title="View Dependency Explorer", 
+    page_icon="🔍", 
+    layout="wide"
+)
+
 def load_view_dependencies(file_path='viewDependencies.csv'):
     """
     Load view dependencies from a CSV file.
@@ -188,15 +195,17 @@ def main():
     """
     Streamlit app for view dependency search
     """
+    # Simple login control
+    st.sidebar.title("Login")
+    username = st.sidebar.text_input("Username")
+    password = st.sidebar.text_input("Password", type="password")
+    if username != "kensingtontours" or password != "itsp-inc":
+        st.sidebar.error("Invalid username or password")
+        return
+
     view_deps = load_view_dependencies()
     view_cols = load_view_columns()
     view_Code = GetCode()
-    # Set page configuration
-    st.set_page_config(
-        page_title="View Dependency Explorer", 
-        page_icon="🔍", 
-        layout="wide"
-    )
     
     # App title and description
     st.title("View Dependency Search")
@@ -214,8 +223,6 @@ def main():
     - `Booking Itinerary.Name`
     """)
     
-
-    
     # Search input
     search_input = st.text_input(
         "Enter Search Terms", 
@@ -226,7 +233,6 @@ def main():
     if search_input:
         try:
             # Load the CSV file
-            
             
             # Perform search
             results = search_view_dependencies(view_deps, search_input, view_cols, view_Code)
